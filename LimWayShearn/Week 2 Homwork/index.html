@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2 Homework</title>
+
+    <style>
+        body {
+            /* background-color: pink; */
+        }
+        
+        h1 {
+            /* border: 1px solid red; */
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <button id="resetBtn" style="float:right;">Reset</button>
+
+    <input type="text" id="inputBox" placeholder="Search Definition" style="float:right;  margin-right: 10px;">
+    
+    <label style="float:right; margin-right: 10px;">Choose a class:
+        <select id="classID">
+            <option value="-1">None</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+        </select>
+    </label>
+    <div id="tagID">
+        <div style="float:left;">
+            <input type="checkbox" value="General">
+            <label> General</label><br>
+            <input type="checkbox" value="Git">
+            <label> Git</label><br>
+            <input type="checkbox" value="GitHub">
+            <label> GitHub</label><br>
+        </div>
+        <div style="float:left; margin-left: 10px;">
+            <input type="checkbox" value="Node">
+            <label> Node</label><br>
+            <input type="checkbox" value="Internet">
+            <label> Internet</label><br>
+            <input type="checkbox" value="Protocol">
+            <label> Protocol</label><br>
+        </div>
+        <div style="float:left; margin-left: 10px;">
+            <input type="checkbox" value="HTTP">
+            <label> HTTP</label><br>
+            <input type="checkbox" value="Front-End">
+            <label> Front-End</label><br>
+            <input type="checkbox" value="Programming">
+            <label> Programming</label><br>
+        </div>
+        <div style="float:left; margin-left: 10px;">
+            <input type="checkbox" value="JavaScript">
+            <label> JavaScript</label><br>
+            <input type="checkbox" value="Browser">
+            <label> Browser</label><br>
+            <input type="checkbox" value="DOM">
+            <label> DOM</label><br>
+        </div>
+        <div style="float:left; margin-left: 10px;">
+            <input type="checkbox" value="Higher-Order Functions">
+            <label> Higher-Order Functions</label><br>
+            <input type="checkbox" value="Events">
+            <label> Events</label><br>
+            <input type="checkbox" value="Functional">
+            <label> Functional</label><br>
+        </div>
+    </div>
+    <br><br><br>
+    <h1>Glossary</h1>
+
+    <ul id="main"></ul>
+
+    <script src="index.js"></script>
+</body>
+</html>
