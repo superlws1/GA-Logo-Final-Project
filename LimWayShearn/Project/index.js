@@ -909,12 +909,13 @@ let glossary = [
     },
   ];
 
+
+  
 /*Initialize*/
 glossary.forEach(element => {
     const newGlossaryTerm = document.createElement('li');
     const newGlossaryClass = document.createElement('li');
     const newGlossaryDef = document.createElement('li');
-    const newGlossaryTags = document.createElement('li');
 
     newGlossaryTerm.classList.add("GlossaryTerm")
     // newGlossaryDef.classList.add("GlossaryDef")
@@ -931,16 +932,14 @@ glossary.forEach(element => {
     newGlossaryDef.innerHTML = "Definition: " + element.definition
     newGlossaryDef.setAttribute("data-","1");
     tempUL.appendChild(newGlossaryDef)
-    newGlossaryTags.innerHTML = "Tags: " + element.tags.join(", ")
-    newGlossaryTags.setAttribute("data-","1");
-    tempUL.appendChild(newGlossaryTags)
 
 });
 
+let highlightFront = "<span class=\"highlight\">";
+let highlightBack = "</span>";
 const glossaryTerm = document.querySelectorAll(".GlossaryTerm");
 const searchBox = document.querySelector("#inputBox");
-const classBox = document.querySelector("#classID");
-const tagBox = document.querySelector("#tagID");
+const movieID = document.querySelector("#movieID");
 const resetBtn = document.querySelector("#resetBtn");
 
 /*Display element*/
@@ -955,7 +954,7 @@ function displayElement (showList,element) {
 /*Reset Button*/
 resetBtn.addEventListener("click", function() {
     searchBox.value = "";
-    classBox.value = -1;
+    movieID.value = -1;
     tagBox.querySelectorAll('div').forEach(element => {
         const inputList = element.querySelectorAll('input')
 
@@ -975,12 +974,35 @@ resetBtn.addEventListener("click", function() {
     });
 });
 
+function getIndicesOf(searchStr, str) {
+  let searchStrLen = searchStr.length;
+
+  if (searchStrLen == 0) {
+      return [];
+  }
+  let startIndex = 0, index, indices = [];
+
+  while ((index = str.indexOf(searchStr, startIndex)) > -1) {
+      indices.push(index);
+      startIndex = index + searchStrLen;
+  }
+  return indices;
+}
+
 /*Search Description*/
 searchBox.addEventListener("keyup", function() {
     // console.log(searchBox.value)
     glossaryTerm.forEach(element => {
         let showList = element.getElementsByTagName("li");
         // console.log(element)
+
+        /*Reset highlight*/
+        let highlightFrontRE = new RegExp(highlightFront,'g');
+        let highlightBackRE = new RegExp(highlightBack,'g');
+
+        element.getElementsByTagName("li")[1].innerHTML = element.getElementsByTagName("li")[1].innerHTML.replace(highlightFrontRE,'');
+        element.getElementsByTagName("li")[1].innerHTML = element.getElementsByTagName("li")[1].innerHTML.replace(highlightBackRE,'');
+
         const descriptionItem = element.getElementsByTagName("li")[1].innerHTML.slice(12).toUpperCase();
         // console.log(descriptionItem)
 
@@ -988,12 +1010,30 @@ searchBox.addEventListener("keyup", function() {
             showList[0].setAttribute('data-','1');
             displayElement(showList,element);
         } else {
-            if (!descriptionItem.includes(searchBox.value.toUpperCase())) {
+            if (descriptionItem.includes(searchBox.value.toUpperCase())) {
+              showList[0].setAttribute('data-','1');
+              displayElement(showList,element);
+
+              /*Highlight text*/
+              let descriptionItemIndex = getIndicesOf(searchBox.value.toUpperCase(),descriptionItem)
+              // console.log(descriptionItemIndex)
+              const descriptionItemFront = element.getElementsByTagName("li")[1].innerHTML.slice(0,12);
+              const descriptionItemBack = element.getElementsByTagName("li")[1].innerHTML.slice(12);
+
+              // console.log(descriptionItemIndex)
+              let newText = descriptionItemFront + descriptionItemBack.slice(0,descriptionItemIndex[0]);
+              for (let i = 0; i < descriptionItemIndex.length; i++) {
+                newText = newText + highlightFront + descriptionItemBack.slice(descriptionItemIndex[i],descriptionItemIndex[i] + searchBox.value.length) + highlightBack
+                newText = newText + descriptionItemBack.slice(descriptionItemIndex[i] + searchBox.value.length,descriptionItemIndex[i+1])
+          
+              }
+              // console.log(newText)
+              element.getElementsByTagName("li")[1].innerHTML = newText;
+
+            } else {
                 showList[0].setAttribute('data-','0');
                 displayElement(showList,element);
-            } else {
-                showList[0].setAttribute('data-','1');
-                displayElement(showList,element);   
+
             }
         }
         
@@ -1002,19 +1042,19 @@ searchBox.addEventListener("keyup", function() {
 });
 
 /*Drop down selection*/
-classBox.addEventListener("change", function() {
-    // console.log(classBox.value)
+movieID.addEventListener("change", function() {
+    // console.log(movieID.value)
     glossaryTerm.forEach(element => {
         let showList = element.getElementsByTagName("li");
 
         const classItem = element.getElementsByTagName("li")[0].innerHTML.slice(6).trim()
         // console.log(classItem)
 
-        if (classBox.value == -1) {
+        if (movieID.value == -1) {
             showList[1].setAttribute('data-','1');
             displayElement(showList,element);
         } else {
-            if (classItem == classBox.value) {
+            if (classItem == movieID.value) {
                 showList[1].setAttribute('data-','1');
                 displayElement(showList,element);
             } else {
@@ -1025,47 +1065,34 @@ classBox.addEventListener("change", function() {
     });
 });
 
-/*Checklist*/
-tagBox.addEventListener("change", function() {
-    let checklist = [];
+// doFoo.onclick = () => {
+//     const myNode = document.getElementById("foo");
+//     while (myNode.firstChild) {
+//       myNode.removeChild(myNode.lastChild);
+//     }
+//   }
 
-    tagBox.querySelectorAll('div').forEach(element => {
-        // console.log(element)
-        const inputList = element.querySelectorAll('input')
+// https://www.omdbapi.com/?apikey=bc141b34&s=&type=series&page=1
 
-        inputList.forEach(element1 => {
-            // console.log(element1)
-            if (element1.checked) {
-                checklist.push(element1.value)
-            }
-        });
-    });
+// fetch(url).then((response)=> {
+//     cl("data success")
+//     return response.json()
+// }).then((data) => {
+//     cl(data)
+//     let {Title:title, Year:years, Poster} = data;
+//     cl(title + years + Poster)
 
-    // console.log(checklist);
-    glossaryTerm.forEach(element => {
-        let showList = element.getElementsByTagName("li");
+//     colOne.innerHTML = `
+//     <h2>${title}</h2>
+//     <p>Years: ${years}</p>
+//     <img src=${Poster}>
+//     `;
+//     colTwo.innerHTML = years
 
-        if (checklist.length == 0) {
-            showList[2].setAttribute('data-','1');
-            displayElement(showList,element);
-        }
-        else {
-            const tagItem = element.getElementsByTagName("li")[2].innerHTML.slice(6)
 
-            // console.log(tagItem);
-            const tagItemArray = tagItem.split(',');
-            for (let i = 0; i < tagItemArray.length; i++) {
-                if (checklist.includes(tagItemArray[i].trim())) {
-                    showList[2].setAttribute('data-','1');
-                    displayElement(showList,element);
-                    return;
-                } else {
-                    showList[2].setAttribute('data-','0');
-                    displayElement(showList,element);
-                
-                }
-            }
-        };
-    });
-});
 
+
+// }).catch((error) => {
+//     cl(error)
+//     cl("error")
+// })
