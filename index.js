@@ -25,7 +25,7 @@ function Initialize (glossary) {
     newGlossaryClass.innerHTML = "Region: " + element.region
     newGlossaryClass.setAttribute("data-","1");
     tempUL.appendChild(newGlossaryClass)
-    newGlossaryDef.innerHTML = "Definition: " + element.cca2
+    newGlossaryDef.innerHTML = "Country Code: " + element.cca2
     newGlossaryDef.setAttribute("data-","1");
     tempUL.appendChild(newGlossaryDef)
     newGlossaryImg.setAttribute("src",element.flags.png)
