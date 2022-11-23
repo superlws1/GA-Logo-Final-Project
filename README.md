@@ -1,5 +1,7 @@
 Final Project
 
+Live Link: https://superlws1.github.io/GA-Logo-Final-Project/
+
 ## Summary
 This app is built using REST Countries API, using ideas from the homework given
 
